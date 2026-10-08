@@ -31,7 +31,12 @@ export default function App() {
         [activeId]: [...prev[activeId], message]
         }));
     }
-
+    function handleReact(id){
+      const updated = messages[activeId].map((m) =>
+        m.id === id ? {...m, hearts: m.hearts + 1} : m
+      )
+      setMessages({...messages, [activeId]: updated});
+    }
   return (
     <div className="app">
       <Sidebar 
@@ -43,7 +48,9 @@ export default function App() {
         <ChatHeader channel= {channel} isTyping={isTyping} />
         <MessageList 
           channelId={activeId}
-          messages={messages[activeId]} />
+          messages={messages[activeId]} 
+          onReact={handleReact}
+          />
         <Composer onSend={handleSend} onTypingChange={setIsTyping} />
       </main>
     </div>
