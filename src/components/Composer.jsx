@@ -15,6 +15,16 @@ export default function Composer() {
     send();
   }
 
+  function handleKeyDown(e){
+    if(e.key === "Enter" && !e.shiftKey){
+      e.preventDefault();
+      send();
+    }
+    if(e.key === "Escape"){
+      setDraft("");
+    }
+  }
+
   return (
     <form className="composer" onSubmit={(e)=>{handleSubmit(e)}}>
       <textarea name="draft" 
@@ -22,6 +32,7 @@ export default function Composer() {
       placeholder="Type a message..." 
       value={draft}
       onChange={(e)=>{setDraft(e.target.value)}}
+      onKeyDown={handleKeyDown}
       />
       <button type="submit">Send</button>
     </form>
