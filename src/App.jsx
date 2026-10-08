@@ -4,10 +4,32 @@ import ChatHeader from "./components/ChatHeader.jsx";
 import MessageList from "./components/MessageList.jsx";
 import Composer from "./components/Composer.jsx";
 import { useState } from "react";
+
+
+function now(){
+  return new Date().toLocaleTimeString([], {hour: "numeric", minute: "2-digit"});
+}
 export default function App() {
 
     const [activeId, setActiveId] = useState("general");
+    const [messages, setMessages] = useState(SEED_MESSAGES);
     const channel = CHANNELS.find((c)=> c.id === activeId);
+
+    function handleSend(text){
+      const message = {
+        id: crypto.randomUUID(),
+        author: "You",
+        time: now(),
+        hearts: 0,
+        text
+      };
+      setMessages(prev => (
+        {
+        ...prev, 
+        [activeId]: [...prev[activeId], message]
+        }));
+    }
+
   return (
     <div className="app">
       <Sidebar 
@@ -17,8 +39,10 @@ export default function App() {
        />
       <main className="main">
         <ChatHeader channel= {channel} />
-        <MessageList messages={SEED_MESSAGES.general} />
-        <Composer />
+        <MessageList 
+          channelId={activeId}
+          messages={messages[activeId]} />
+        <Composer onSend={handleSend} />
       </main>
     </div>
   );
