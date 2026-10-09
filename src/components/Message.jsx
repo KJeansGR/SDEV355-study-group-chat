@@ -1,11 +1,16 @@
 
 import { useState } from "react";
 
-export default function Message({ message, onReact }) {
+export default function Message({ message, isPinned, onPin, onReact }) {
   const [showTime, setShowTIme] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
-  const [isPinned, setIsPinned] = useState(false);
+  //const [isPinned, setIsPinned] = useState(false);
 
+    function handlePinClick(e){
+      e.stopPropagation();
+      onPin(message.id);
+    }
+    
   return (
     <li 
       className={ isPinned ? "message pinned" : "message"}
@@ -25,7 +30,7 @@ export default function Message({ message, onReact }) {
       }
       {isHovered && (
        <div className="toolbar">
-        <button onClick={()=> setIsPinned(!isPinned)}>
+        <button onClick={handlePinClick}>
           {isPinned ? "Unpin":"pin"}
         </button>
        </div> 
